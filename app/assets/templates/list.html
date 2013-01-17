@@ -1,0 +1,17 @@
+<input type="text" ng-model="search" class="search-query" placeholder="Search">
+<table>
+  <tr>
+    <th>Make</th>
+    <th>Model</th>
+    <th>Year</th>
+    <th><a href="#/new">new</a></th>
+  </tr>
+  <tr ng-repeat="car in cars | filter:search | orderBy:'year'">
+    <td>{{ car.make }}</td>
+    <td>{{ car.model }}</td>
+    <td>{{ car.year }}</td>
+    <td>
+      <a href="#/edit/{{ car.id }}">edit</a>
+    </td>
+  </tr>
+</table>

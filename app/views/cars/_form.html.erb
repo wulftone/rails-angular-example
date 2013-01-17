@@ -1,0 +1,35 @@
+<div ng-controller='angularApp.carCtrl'>
+
+    <ul>
+      <li>remaining: {{ remaining() }}</li>
+      <li>total: {{ cars.length }}</li>
+      <li ng-repeat='car in cars'>
+        make: {{ car.make }},
+        model: {{ car.model }},
+        year: {{ car.year }}
+      </li>
+    </ul>
+  <form ng-submit='addCar(newCar)'>
+    <div class="field">
+      <label>
+        Year
+        <input type='text' ng-model='newCar.year' placeholder='1990' />
+      </label>
+    </div>
+    <div class="field">
+      <label>
+        Make
+        <input type='text' ng-model='newCar.make' placeholder='ford' />
+      </label>
+    </div>
+    <div class="field">
+      <label>
+        Model
+        <input type='text' ng-model='newCar.model' placeholder='focus' />
+      </label>
+    </div>
+    <div class="actions">
+      <input class="btn-primary" type="submit" value="add">
+    </div>
+  </form>
+</div>

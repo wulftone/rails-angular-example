@@ -1,0 +1,49 @@
+`var win = typeof(window) === 'undefined' ? {} : window`
+`var mod = typeof(module) === 'undefined' ? {} : module`
+win.angularApp = win.angularApp || {}
+
+win.angular.module('carproject', ['mongolab'])
+  .config ($routeProvider) ->
+    $routeProvider
+      .when '/',
+        controller: win.angularApp.listCtrl
+        templateUrl: '<%= asset_path "list.html" %>'
+      .when '/new',
+        controller: win.angularApp.newCtrl
+        templateUrl: '<%= asset_path "new.html" %>'
+      .when '/edit/:car_id',
+        controller: win.angularApp.editCtrl
+        templateUrl: '<%= asset_path "new.html" %>'
+      .otherwise redirectTo: '/'
+  .config [ "$httpProvider", (provider) ->
+      provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
+  ]
+
+mod.exports = win.angularApp.listCtrl = ($scope, Cars) ->
+  $scope.cars = Cars.query()
+
+
+mod.exports = win.angularApp.newCtrl = ($scope, $location, Car) ->
+  $scope.save = () ->
+    Car.save $scope.car, (car) ->
+      $location.path '/'
+
+
+mod.exports = win.angularApp.editCtrl = ($scope, $location, $routeParams, Car) ->
+  self = @
+
+  Car.get {car_id: $routeParams.car_id}, (car) ->
+    self.original_car = car
+    $scope.car = new Car self.original_car
+
+  $scope.isClean = ->
+    angular.equals(self.original_car, $scope.car)
+
+  $scope.destroy = ->
+    self.original_car.destroy ->
+      $location.path '/list'
+
+  $scope.save = ->
+    window.car = $scope.car
+    $scope.car.$update ->
+      $location.path '/'

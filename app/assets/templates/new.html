@@ -1,0 +1,24 @@
+<form name="myForm">
+  <div class="control-group" ng-class="{error: myForm.make.$invalid}">
+    <label>Make</label>
+    <input type="text" name="make" ng-model="car.make" required>
+    <span ng-show="myForm.make.$error.required" class="help-inline">Required</span>
+    <span ng-show="myForm.make.$error.length" class="help-inline">Required</span>
+  </div>
+
+  <div class="control-group" ng-class="{error: myForm.model.$invalid}">
+    <label>Model</label>
+    <input type="text" name="model" ng-model="car.model" required>
+    <span ng-show="myForm.model.$error.required" class="help-inline">Required</span>
+  </div>
+
+    <label>Year</label>
+    <input type="text" name="year" ng-model="car.year" required ng-maxlength="4" ng-minlength="1">
+    <span ng-show="myForm.year.$error.required" class="help-inline">Required</span>
+    <span ng-show="myForm.year.$error.maxlength" class="help-inline">Must be 4 characters</span>
+    <span ng-show="myForm.year.$error.minlength" class="help-inline">Must be 4 characters</span>
+
+  <br>
+  <a href="#/" class="btn">Cancel</a>
+  <button ng-click="save()" class="btn btn-primary">Save</button>
+</form>
