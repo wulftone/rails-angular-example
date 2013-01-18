@@ -19,12 +19,21 @@ win.angular.module('carproject', ['mongolab'])
       provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
   ]
 
-mod.exports = win.angularApp.listCtrl = ($scope, Cars) ->
-  $scope.cars = Cars.query()
+mod.exports = win.angularApp.listCtrl = ($scope, $location, Cars) ->
+  window.qcars = $scope.cars = Cars.query()
+  window.cars = Cars
+
+  $scope.destroy = (id) ->
+    filteredCars = $scope.cars.filter (car) ->
+      car.id == id
+
+    filteredCars[0].$remove (car) ->
+      index = $scope.cars.indexOf(filteredCars[0])
+      $scope.cars.splice(index,1)
 
 
 mod.exports = win.angularApp.newCtrl = ($scope, $location, Car) ->
-  $scope.save = () ->
+  $scope.save = ->
     Car.save $scope.car, (car) ->
       $location.path '/'
 

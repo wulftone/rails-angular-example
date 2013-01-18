@@ -4,12 +4,12 @@ win.angularApp = win.angularApp || {}
 
 win.angular.module('mongolab', ['ngResource'])
   .factory 'Cars', ($resource) ->
-    $resource '/cars', {},
+    $resource '/cars/:car_id', { car_id: '@id' },
       index: { method: 'GET', isArray: true},
       create: { method: 'POST' }
 
   .factory 'Car', ($resource) ->
-    $resource '/cars/:car_id', { car_id: '@id' },
+    Car = $resource '/cars/:car_id', { car_id: '@id' },
       index: { method: 'GET', isArray: true },
       new: { method: 'GET' },
       create: { method: 'POST' },
