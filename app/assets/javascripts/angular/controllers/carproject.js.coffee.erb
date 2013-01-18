@@ -20,16 +20,20 @@ win.angular.module('carproject', ['mongolab'])
   ]
 
 mod.exports = win.angularApp.listCtrl = ($scope, $location, Cars) ->
-  window.qcars = $scope.cars = Cars.query()
-  window.cars = Cars
+  $scope.cars = Cars.query()
+
+  destroyItem = (id, collection, callback) ->
+    filteredItem = collection.filter (item) ->
+      item.id == id
+
+    filteredItem[0].$remove (item) ->
+      index = collection.indexOf(filteredItem[0])
+      collection.splice(index,1)
+      callback(item)
 
   $scope.destroy = (id) ->
-    filteredCars = $scope.cars.filter (car) ->
-      car.id == id
-
-    filteredCars[0].$remove (car) ->
-      index = $scope.cars.indexOf(filteredCars[0])
-      $scope.cars.splice(index,1)
+    destroyItem id, $scope.cars, (car) ->
+      console.log car
 
 
 mod.exports = win.angularApp.newCtrl = ($scope, $location, Car) ->
